@@ -1,20 +1,60 @@
-{
+﻿{
   "name": "@jshookmcp/plugin-apk-bridge",
   "version": "0.2.0",
   "description": "APK static analysis bridge plugin for jshookmcp with bundled Windows x64 Java, Apktool, and Jadx.",
   "type": "module",
-  "license": "MIT",
+  "main": "manifest.js",
+  "exports": {
+    ".": "./manifest.js",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "jshook-apk-bridge": "scripts/install-plugin.mjs"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vmoranv/jshookmcp.git",
+    "directory": "plugins/apk-bridge"
+  },
+  "bugs": {
+    "url": "https://github.com/vmoranv/jshookmcp/issues"
+  },
+  "homepage": "https://github.com/vmoranv/jshookmcp/tree/main/plugins/apk-bridge",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "jshookmcp",
+    "mcp",
+    "plugin",
+    "apk",
+    "apktool",
+    "jadx",
+    "android",
+    "reverse-engineering"
+  ],
   "files": [
+    "LICENSE",
     "manifest.js",
     "README.md",
+    "src/**",
     "scripts/**",
-    "tools/**"
+    "tools/**",
+    "tsconfig.json"
   ],
   "scripts": {
-    "prepare:tools": "node scripts/prepare-tools.mjs"
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepare:tools": "node scripts/prepare-tools.mjs",
+    "check:package": "node scripts/check-package.mjs",
+    "pack:preview": "npm pack --dry-run",
+    "prepack": "npm run build && npm run check:package"
   },
-  "dependencies": {
-    "njre": "^1.5.3"
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "njre": "^1.5.3",
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">=20.0.0"

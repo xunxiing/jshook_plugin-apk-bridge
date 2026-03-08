@@ -1,46 +1,63 @@
-# APK Bridge Plugin
+﻿# APK Bridge Plugin
 
-Local `jshookmcp` plugin for APK static analysis.
+`@jshookmcp/plugin-apk-bridge` is a `jshookmcp` plugin for APK static analysis on `Windows x64`.
 
-Current bundle target: `Windows x64`.
+## Features
 
-The plugin ships with bundled:
+- Bundled `Java`, `apktool`, and `jadx`
+- No separate Java or APK tooling install on supported hosts
+- TypeScript source in `src/manifest.ts`
+- Compiled runtime entry in `manifest.js`
+- `workDir`-first output layout
+- Tools: `apk_check_env`, `apk_unpack`, `apk_decompile`, `apk_manifest_summary`, `apk_search_code`
 
-- Java runtime (`njre`-compatible JRE layout)
-- `jadx`
-- `apktool`
+## Requirements
 
-So end users do not need to install Java, Jadx, or Apktool separately on supported platforms.
+- `Node.js >= 20`
+- `Windows x64`
+- A writable `jshookmcp` plugin directory
 
-## Tools
+## Install
 
-- `apk_check_env`
-- `apk_unpack`
-- `apk_decompile`
-- `apk_manifest_summary`
-- `apk_search_code`
+### Copy into a jshook plugin directory
 
-## Output behavior
+`npx @jshookmcp/plugin-apk-bridge --target D:/path/to/jshook/plugins/apk-bridge --force`
 
-- Prefer passing `workDir` to `apk_unpack` and `apk_decompile`
-- If `outputDir` is omitted, output goes to `<workDir>/<apk-name>/apktool` and `<workDir>/<apk-name>/jadx`
+Then reload extensions in `jshookmcp`.
+
+### Global install
+
+`npm install -g @jshookmcp/plugin-apk-bridge`
+
+`jshook-apk-bridge --target D:/path/to/jshook/plugins/apk-bridge --force`
+
+## Output Layout
+
+- `apk_unpack({ inputPath, workDir })` -> `<workDir>/<apk-name>/apktool`
+- `apk_decompile({ inputPath, workDir })` -> `<workDir>/<apk-name>/jadx`
+- `apk_manifest_summary({ inputPath, workDir })` -> `<workDir>/<apk-name>/summary.json`
 - If `workDir` is omitted, output defaults to the current working directory
-- `summary.json` is written under `<workDir>/<apk-name>/summary.json`
 
-## Bundled tools
+## Bundled Tools
 
-- Bundled tools live under `tools/windows-x64/`
-- `apk_check_env` prefers bundled binaries first, then falls back to `PATH`
-- `jadx` is wrapped so it automatically uses the bundled Java runtime
-- `apktool` is wrapped so it automatically uses the bundled Java runtime
+- Bundled files live in `tools/windows-x64/`
+- `apk_check_env` prefers bundled binaries and only falls back to `PATH`
+- `jadx` uses the bundled Java wrapper automatically
+- `apktool` uses the bundled Java wrapper automatically
 
-## Packaging
+## Maintainer Commands
 
-- Plugin package metadata lives in `package.json`
-- Refresh bundled dependencies with `npm run prepare:tools`
-- Recommended publish flow is to publish from `plugins/apk-bridge/`
+- `npm install`
+- `npm run typecheck`
+- `npm run build`
+- `npm run prepare:tools`
+- `npm run check:package`
+- `npm run pack:preview`
+- `npm publish --access public`
 
-## Example
+## Publish Notes
 
-- `apk_unpack({ inputPath: 'D:/path/app.apk', workDir: 'D:/work/apk-analysis' })`
-- `apk_decompile({ inputPath: 'D:/path/app.apk', workDir: 'D:/work/apk-analysis' })`
+- Publish from `plugins/apk-bridge`
+- Current package target is `Windows x64`
+- The packed archive is large because it includes Java, `jadx`, and `apktool`
+- Runtime loads `manifest.js`; source-of-truth lives in `src/manifest.ts`
