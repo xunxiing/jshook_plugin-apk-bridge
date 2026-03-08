@@ -1,0 +1,28 @@
+{
+  "name": "@jshookmcp/plugin-apk-bridge",
+  "version": "0.2.0",
+  "description": "APK static analysis bridge plugin for jshookmcp with bundled Windows x64 Java, Apktool, and Jadx.",
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "manifest.js",
+    "README.md",
+    "scripts/**",
+    "tools/**"
+  ],
+  "scripts": {
+    "prepare:tools": "node scripts/prepare-tools.mjs"
+  },
+  "dependencies": {
+    "njre": "^1.5.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "platformKey": "windows-x64",
+  "preparedAt": "2026-03-08T08:20:27.434Z",
+  "java": {
+    "source": "njre",
+    "version": "openjdk version \"17.0.18\" 2026-01-20",
+    "warning": null
+  },
+  "jadx": {
+    "version": "1.5.5"
+  },
+  "apktool": {
+    "version": "2.12.1"
+  }
+}
